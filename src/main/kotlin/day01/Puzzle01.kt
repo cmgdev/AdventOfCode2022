@@ -2,22 +2,27 @@ package day01
 
 fun main() {
 
-    println(getMax(EXAMPLE_1.lines()) == 24000)
-    println(getMax(INPUT.lines()) == 71124)
+    println(getAllCalories(EXAMPLE_1.lines()).maxOf { it } == 24000)
+    println(getAllCalories(INPUT.lines()).maxOf { it } == 71124)
+
+    println(getAllCalories(EXAMPLE_1.lines()).sortedDescending().take(3).sum() == 45000)
+    println(getAllCalories(INPUT.lines()).sortedDescending().take(3).sum() == 204639)
+
 }
 
-private fun getMax(lines: List<String>): Int {
-    var max = 0
+private fun getAllCalories(lines: List<String>): List<Int> {
+    val calories = mutableListOf<Int>()
     var current = 0
     lines.forEach {
         if (it.isNotBlank()) {
             current += Integer.valueOf(it)
         } else {
-            max = maxOf(max, current)
+            calories.add(current)
             current = 0
         }
     }
-    return max
+    calories.add(current)
+    return calories
 }
 
 val EXAMPLE_1 = """
