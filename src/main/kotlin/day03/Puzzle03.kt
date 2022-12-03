@@ -7,26 +7,24 @@ fun main() {
 }
 
 private fun getSumOfPriorities(input: String): Int {
-    var sum = 0
-    input.lines().forEach { line ->
-        val offset = line.length / 2
-        var found = false
-        for (i in 0 until offset) {
-            for (j in offset until line.length) {
-                if (line[i] == line[j]) {
-                    val priority = alphabet.indexOf(line[i]) + 1
-                    sum += priority
-                    found = true
-                    break
-                }
-            }
-            if (found) break
-        }
+    return input.lines().sumOf {
+        val middle = it.length / 2
+        val first = it.substring(0, middle)
+        val second = it.substring(middle, it.length)
+
+        alphabet.indexOf(getCommonChar(first, second)) + 1
     }
-    return sum
 }
 
-val alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+private fun getCommonChar(first: String, second: String): Char {
+    for (i in first.indices) {
+        val c = first[i]
+        if (second.indexOf(c) >= 0) return c
+    }
+    throw RuntimeException("No common char found in $first and $second!")
+}
+
+const val alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 val EXAMPLE_1 = """
 vJrwpWtwJgWrhcsFMMfFFhFp
