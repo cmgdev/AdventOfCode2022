@@ -4,26 +4,43 @@ fun main() {
 
     println(getScore(EXAMPLE_1) == 15)
     println(getScore(INPUT) == 11386)
+
+    println(getScore(EXAMPLE_1, true) == 12)
+    println(getScore(INPUT, true) == 13600)
+
 }
 
-private fun getScore(hands: String): Int {
+private fun getScore(hands: String, part2: Boolean = false): Int {
+    val s = if (part2) scores2 else scores
     return hands.lines().sumOf { hand ->
-        scores.find {
+        s.find {
             it.first == hand
         }?.second ?: 0
     }
 }
 
 val scores = listOf(
-    "B X" to 1,
-    "C Y" to 2,
-    "A Z" to 3,
     "A X" to 4,
-    "B Y" to 5,
-    "C Z" to 6,
-    "C X" to 7,
     "A Y" to 8,
-    "B Z" to 9
+    "A Z" to 3,
+    "B X" to 1,
+    "B Y" to 5,
+    "B Z" to 9,
+    "C X" to 7,
+    "C Y" to 2,
+    "C Z" to 6
+)
+
+val scores2 = listOf(
+    "A X" to 3,
+    "A Y" to 4,
+    "A Z" to 8,
+    "B X" to 1,
+    "B Y" to 5,
+    "B Z" to 9,
+    "C X" to 2,
+    "C Y" to 6,
+    "C Z" to 7
 )
 
 /*
@@ -38,10 +55,23 @@ C Y == lose, 2 + 0 = 2
 C Z == tie, 3 + 3 = 6
  */
 
+/*
+A X == lose, 3 + 0 = 3
+A Y == tie, 1 + 3 = 4
+A Z == win, 2 + 6 = 8
+B X == lose, 1 + 0 = 1
+B Y == tie, 2 + 3 = 5
+B Z == win, 3 + 6 = 9
+C X == lose, 2 + 0 = 2
+C Y == tie, 3 + 3 = 6
+C Z == win, 1 + 6 = 7
+ */
+
 // 0 if you lost, 3 if the round was a draw, and 6 if you won
 // 1 for Rock, 2 for Paper, and 3 for Scissors
 // A for Rock, B for Paper, and C for Scissors
 // X for Rock, Y for Paper, and Z for Scissors
+// X for Lose, Y for Tie, and Z for Win
 
 val EXAMPLE_1 = """
 A Y
