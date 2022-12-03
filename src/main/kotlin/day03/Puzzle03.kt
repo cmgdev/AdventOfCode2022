@@ -1,12 +1,14 @@
 package day03
 
 fun main() {
+    println(getPart1(EXAMPLE_1) == 157)
+    println(getPart1(INPUT) == 7691)
 
-    println(getSumOfPriorities(EXAMPLE_1) == 157)
-    println(getSumOfPriorities(INPUT) == 7691)
+    println(getPart2(EXAMPLE_1) == 70)
+    println(getPart2(INPUT) == 2508)
 }
 
-private fun getSumOfPriorities(input: String): Int {
+private fun getPart1(input: String): Int {
     return input.lines().sumOf {
         val middle = it.length / 2
         val first = it.substring(0, middle)
@@ -16,12 +18,26 @@ private fun getSumOfPriorities(input: String): Int {
     }
 }
 
+private fun getPart2(input: String): Int {
+    return input.lines().chunked(3).sumOf {
+        alphabet.indexOf(getCommonChar(it[0], it[1], it[2])) + 1
+    }
+}
+
 private fun getCommonChar(first: String, second: String): Char {
     for (i in first.indices) {
         val c = first[i]
         if (second.indexOf(c) >= 0) return c
     }
     throw RuntimeException("No common char found in $first and $second!")
+}
+
+private fun getCommonChar(first: String, second: String, third: String): Char {
+    for (i in first.indices) {
+        val c = first[i]
+        if (second.indexOf(c) >= 0 && third.indexOf(c) >= 0) return c
+    }
+    throw RuntimeException("No common char found in $first, $second, and $third!")
 }
 
 const val alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
