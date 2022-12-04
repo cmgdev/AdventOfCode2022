@@ -1,10 +1,15 @@
 package day04
 
+import kotlin.math.max
+import kotlin.math.min
+
 fun main() {
 
     println(part1(EXAMPLE_1) == 2)
     println(part1(INPUT) == 496)
 
+    println(part2(EXAMPLE_1) == 4)
+    println(part2(INPUT) == 847)
 }
 
 private fun part1(input: String): Int {
@@ -13,6 +18,16 @@ private fun part1(input: String): Int {
 
         (pairs.first.first <= pairs.second.first && pairs.first.second >= pairs.second.second)
                 || (pairs.second.first <= pairs.first.first && pairs.second.second >= pairs.first.second)
+    }
+}
+
+private fun part2(input: String): Int {
+    return input.lines().count {
+        val pairs = toPairs(it)
+
+        val greatestMin = max(pairs.first.first, pairs.second.first)
+        val leastMax = min(pairs.first.second, pairs.second.second)
+        leastMax >= greatestMin
     }
 }
 
