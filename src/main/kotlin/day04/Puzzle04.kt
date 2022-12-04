@@ -4,23 +4,25 @@ fun main() {
 
     println(part1(EXAMPLE_1) == 2)
     println(part1(INPUT) == 496)
+
 }
 
 private fun part1(input: String): Int {
     return input.lines().count {
-        val first = it.split(",")[0]
-        val second = it.split(",")[1]
+        val pairs = toPairs(it)
 
-        val firstStart = first.split("-")[0].toInt()
-        val firstEnd = first.split("-")[1].toInt()
-        val secondStart = second.split("-")[0].toInt()
-        val secondEnd = second.split("-")[1].toInt()
-
-        (firstStart <= secondStart && firstEnd >= secondEnd)
-                || (secondStart <= firstStart && secondEnd >= firstEnd)
+        (pairs.first.first <= pairs.second.first && pairs.first.second >= pairs.second.second)
+                || (pairs.second.first <= pairs.first.first && pairs.second.second >= pairs.first.second)
     }
 }
 
+private fun toPairs(input: String): Pair<Pair<Int, Int>, Pair<Int, Int>> {
+    val first = input.split(",")[0]
+    val second = input.split(",")[1]
+
+    return (first.split("-")[0].toInt() to first.split("-")[1].toInt()) to
+            (second.split("-")[0].toInt() to second.split("-")[1].toInt())
+}
 
 private val EXAMPLE_1 = """
 2-4,6-8
