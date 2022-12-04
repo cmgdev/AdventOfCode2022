@@ -25,7 +25,7 @@ private fun getAllCalories(lines: List<String>): List<Int> {
     return calories
 }
 
-val EXAMPLE_1 = """
+private val EXAMPLE_1 = """
 1000
 2000
 3000
@@ -41,7 +41,7 @@ val EXAMPLE_1 = """
 
 10000
 """.trimIndent()
-val INPUT = """
+private val INPUT = """
 5916
 7281
 1715

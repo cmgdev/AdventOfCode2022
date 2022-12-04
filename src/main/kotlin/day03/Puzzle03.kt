@@ -42,7 +42,7 @@ private fun getCommonChar(first: String, second: String, third: String): Char {
 
 const val alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-val EXAMPLE_1 = """
+private val EXAMPLE_1 = """
 vJrwpWtwJgWrhcsFMMfFFhFp
 jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
 PmmdzqPrVvPwwTWBwg
@@ -50,7 +50,7 @@ wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
 ttgJtRGJQctTZtZT
 CrZsJsPPZsGzwwsLwLmpwMDw
 """.trimIndent()
-val INPUT = """
+private val INPUT = """
 rNZNWvMZZmDDmwqNdZrWTqhJMhhgzggBhzBJBchQzzJJ
 pHlSVbVbFHgHBzzhQHqg
 nVsqGpbbtDtTNmrmfZ

@@ -73,12 +73,12 @@ C Z == win, 1 + 6 = 7
 // X for Rock, Y for Paper, and Z for Scissors
 // X for Lose, Y for Tie, and Z for Win
 
-val EXAMPLE_1 = """
+private val EXAMPLE_1 = """
 A Y
 B X
 C Z
 """.trimIndent()
-val INPUT = """
+private val INPUT = """
 C Z
 B Y
 C X
