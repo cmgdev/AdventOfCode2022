@@ -2,35 +2,47 @@ package day05
 
 fun main() {
 
-    val exampleStacks = mutableListOf(
-        ArrayDeque(listOf("Z", "N")),
-        ArrayDeque(listOf("M", "C", "D")),
-        ArrayDeque(listOf("P"))
-    )
-    val inputStacks = mutableListOf(
-        ArrayDeque(listOf("R", "N", "P", "G")),
-        ArrayDeque(listOf("T", "J", "B", "L", "C", "S", "V", "H")),
-        ArrayDeque(listOf("T", "D", "B", "M", "N", "L")),
-        ArrayDeque(listOf("R", "V", "P", "S", "B")),
-        ArrayDeque(listOf("G", "C", "Q", "S", "W", "M", "V", "H")),
-        ArrayDeque(listOf("W", "Q", "S", "C", "D", "B", "J")),
-        ArrayDeque(listOf("F", "Q", "L")),
-        ArrayDeque(listOf("W", "M", "H", "T", "D", "L", "F", "V")),
-        ArrayDeque(listOf("L", "P", "B", "V", "M", "J", "F"))
-    )
+    var exampleStacks = getExampleStacks()
+    var inputStacks = getInputStacks()
 
-    runInstructions(EXAMPLE_1, exampleStacks)
+    part1(EXAMPLE_1, exampleStacks)
     println(topOfStack(exampleStacks) == "CMZ")
 
-    runInstructions(INPUT, inputStacks)
+    part1(INPUT, inputStacks)
     println(topOfStack(inputStacks) == "HBTMTBSDC")
 
+    exampleStacks = getExampleStacks()
+    inputStacks = getInputStacks()
+
+    part2(EXAMPLE_1, exampleStacks)
+    println(topOfStack(exampleStacks) == "MCD")
+
+    part2(INPUT, inputStacks)
+    println(topOfStack(inputStacks) == "PQTJRSHWS")
 }
+
+private fun getInputStacks() = mutableListOf(
+    ArrayDeque(listOf("R", "N", "P", "G")),
+    ArrayDeque(listOf("T", "J", "B", "L", "C", "S", "V", "H")),
+    ArrayDeque(listOf("T", "D", "B", "M", "N", "L")),
+    ArrayDeque(listOf("R", "V", "P", "S", "B")),
+    ArrayDeque(listOf("G", "C", "Q", "S", "W", "M", "V", "H")),
+    ArrayDeque(listOf("W", "Q", "S", "C", "D", "B", "J")),
+    ArrayDeque(listOf("F", "Q", "L")),
+    ArrayDeque(listOf("W", "M", "H", "T", "D", "L", "F", "V")),
+    ArrayDeque(listOf("L", "P", "B", "V", "M", "J", "F"))
+)
+
+private fun getExampleStacks() = mutableListOf(
+    ArrayDeque(listOf("Z", "N")),
+    ArrayDeque(listOf("M", "C", "D")),
+    ArrayDeque(listOf("P"))
+)
 
 private fun topOfStack(stacks: MutableList<ArrayDeque<String>>) =
     stacks.map { it.last() }.reduce { a, b -> a + b }
 
-private fun runInstructions(
+private fun part1(
     input: String,
     stacks: MutableList<ArrayDeque<String>>
 ) {
@@ -46,6 +58,27 @@ private fun runInstructions(
             val j = fromStack.removeLast()
             toStack.addLast(j)
         }
+    }
+}
+
+private fun part2(
+    input: String,
+    stacks: MutableList<ArrayDeque<String>>
+) {
+    input.lines().forEach {
+        val parts = it.split(" ")
+        val count = parts[1].toInt()
+        val from = parts[3].toInt() - 1
+        val to = parts[5].toInt() - 1
+
+        val fromStack = stacks[from]
+        val toStack = stacks[to]
+        val toMove = mutableListOf<String>()
+        for (i in 1..count) {
+            val j = fromStack.removeLast()
+            toMove.add(0, j)
+        }
+        toMove.forEach { move -> toStack.addLast(move) }
     }
 }
 
