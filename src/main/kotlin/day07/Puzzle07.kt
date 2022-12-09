@@ -1,28 +1,39 @@
 package day07
 
-fun main() {
 
-    val threshold = 100000
+fun main() {
     var root = buildFileNodes(EXAMPLE_1)
-    println(sumBelowThreshold(root, threshold) == 95437)
+    println(sumBelowThreshold(root) == 95437)
+    println(getMinDirSizeToFree(root) == 24933642)
 
     root = buildFileNodes(INPUT)
-    println(sumBelowThreshold(root, threshold) == 1513699)
+    println(sumBelowThreshold(root) == 1513699)
+    println(getMinDirSizeToFree(root))
 }
 
-private fun sumBelowThreshold(root: Node, threshold: Int): Int {
-    val childDirs = ArrayDeque(root.children.filter { !it.isFile })
-    var sum = 0
+private fun getMinDirSizeToFree(root: Node): Int {
+    val totalSpace = 70000000
+    val neededSpace = 30000000
+    val allDirSizes = getAllDirSizes(root).sorted()
+    val minSpaceToFree = neededSpace - (totalSpace - root.getSizeWithChildren())
+    return allDirSizes.first { it >= minSpaceToFree }
+}
 
+private fun sumBelowThreshold(root: Node): Int {
+    val threshold = 100000
+    return getAllDirSizes(root).filter { it <= threshold }.sum()
+}
+
+private fun getAllDirSizes(root: Node): List<Int> {
+    val sizes = mutableListOf<Int>()
+    val childDirs = ArrayDeque(root.children.filter { !it.isFile })
     while (childDirs.isNotEmpty()) {
         val child = childDirs.removeFirst()
-        val size = child.getSizeWithChildren()
-        if (size <= threshold) {
-            sum += size
-        }
+        sizes.add(child.getSizeWithChildren())
         childDirs.addAll(child.children.filter { !it.isFile })
     }
-    return sum
+
+    return sizes
 }
 
 private fun buildFileNodes(input: String): Node {
