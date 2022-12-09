@@ -4,10 +4,79 @@ fun main() {
 
     var visibleTrees = getVisibleTrees(EXAMPLE_1)
     println(visibleTrees.size == 21)
+    println(getBestScore(EXAMPLE_1) == 8)
 
     visibleTrees = getVisibleTrees(INPUT)
     println(visibleTrees.size == 1845)
+    println(getBestScore(INPUT) == 230112)
 
+}
+
+private fun getBestScore(input: String): Int {
+    val lines = input.lines()
+    val h = lines.size
+    val w = lines.first().length
+
+    var bestScore = 0
+
+    for (x in 1 until (h - 1)) {
+        for (y in 1 until (w - 1)) {
+            val thisTree = lines[x][y].digitToInt()
+            var thisScore = 1
+
+            //left to right
+            var thisDistance = 0
+            for (i in (y + 1) until w) {
+                thisDistance++
+                val neighborHeight = lines[x][i].digitToInt()
+                if (neighborHeight >= thisTree) {
+                    break
+                }
+            }
+            if (thisDistance == 0) break
+            thisScore *= thisDistance
+
+            //right to left
+            thisDistance = 0
+            for (i in (y - 1) downTo 0) {
+                thisDistance++
+                val neighborHeight = lines[x][i].digitToInt()
+                if (neighborHeight >= thisTree) {
+                    break
+                }
+            }
+            if (thisDistance == 0) break
+            thisScore *= thisDistance
+
+            // going down
+            thisDistance = 0
+            for (i in (x + 1) until h) {
+                thisDistance++
+                val neighborHeight = lines[i][y].digitToInt()
+                if (neighborHeight >= thisTree) {
+                    break
+                }
+            }
+            if (thisDistance == 0) break
+            thisScore *= thisDistance
+
+            // going up
+            thisDistance = 0
+            for (i in (x - 1) downTo 0) {
+                thisDistance++
+                val neighborHeight = lines[i][y].digitToInt()
+                if (neighborHeight >= thisTree) {
+                    break
+                }
+            }
+            if (thisDistance == 0) break
+            thisScore *= thisDistance
+
+            bestScore = maxOf(bestScore, thisScore)
+        }
+    }
+
+    return bestScore
 }
 
 private fun getVisibleTrees(input: String): MutableSet<String> {
