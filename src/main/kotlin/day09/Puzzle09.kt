@@ -1,23 +1,24 @@
 package day09
 
+import kotlin.math.max
+
 fun main() {
 
-    var headMoves = mutableListOf(Pair(0, 0))
-    var tailMoves = mutableListOf(Pair(0, 0))
-    runMoves(EXAMPLE_1, headMoves, tailMoves)
-    println(tailMoves.distinct().size == 13)
+    println(runMoves(2, EXAMPLE_1).size == 13)
+    println(runMoves(2, INPUT).size == 6745)
 
-    headMoves = mutableListOf(Pair(0, 0))
-    tailMoves = mutableListOf(Pair(0, 0))
-    runMoves(INPUT, headMoves, tailMoves)
-    println(tailMoves.distinct().size == 6745)
+    println(runMoves(10, EXAMPLE_1).size == 1)
+    println(runMoves(10, EXAMPLE_2).size == 36)
+    println(runMoves(10, INPUT).size == 2793)
 }
 
-private fun runMoves(
-    input: String,
-    headMoves: MutableList<Pair<Int, Int>>,
-    tailMoves: MutableList<Pair<Int, Int>>
-) {
+private fun runMoves(ropeLength: Int, input: String): MutableSet<Pair<Int, Int>> {
+    val rope = mutableListOf<Pair<Int, Int>>()
+    val tailMoves = mutableSetOf<Pair<Int, Int>>()
+    for (i in 0 until ropeLength) {
+        rope.add(Pair(0, 0))
+    }
+
     input.lines().forEach {
         val parts = it.split(" ")
         val distance = parts[1].toInt()
@@ -31,20 +32,45 @@ private fun runMoves(
         }
 
         for (i in 1..distance) {
-            val currentHead = headMoves.last()
+            val currentHead = rope.first()
             val nextHead = nextPoint(currentHead, direction)
-            headMoves.add(nextHead)
+            rope[0] = nextHead
 
-            val currentTail = tailMoves.last()
-            val dX = nextHead.first - currentTail.first
-            val dY = nextHead.second - currentTail.second
+            for (j in 1 until ropeLength) {
+                val previous = rope[j - 1]
+                val currentTail = rope[j]
+                val dX = previous.first - currentTail.first
+                val dY = previous.second - currentTail.second
 
-            val dir = getDirection(dX, dY)
-            if (dir != Direction.NONE) {
-                tailMoves.add(nextPoint(currentTail, dir))
+                val dir = getDirection(dX, dY)
+                rope[j] = nextPoint(currentTail, dir)
+                if (j == ropeLength - 1) {
+                    tailMoves.add(rope[j])
+                }
             }
-
         }
+    }
+    return tailMoves
+}
+
+fun printRope(rope: MutableList<Pair<Int, Int>>) {
+    var maxX = 0
+    var maxY = 0
+
+    rope.forEach {
+        maxX = max(maxX, it.first)
+        maxY = max(maxY, it.second)
+    }
+
+    for (i in maxX.coerceAtLeast(10) downTo 0) {
+        for (j in 0..maxY.coerceAtLeast(10)) {
+
+            when (val idx = rope.indexOf(Pair(i, j))) {
+                -1 -> print(".")
+                else -> print(idx)
+            }
+        }
+        println()
     }
 }
 
@@ -120,6 +146,16 @@ R 4
 D 1
 L 5
 R 2
+""".trimIndent()
+private val EXAMPLE_2 = """
+R 5
+U 8
+L 8
+D 3
+R 17
+D 10
+L 25
+U 20
 """.trimIndent()
 private val INPUT = """
 D 1
